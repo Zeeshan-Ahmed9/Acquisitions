@@ -19,8 +19,16 @@ app.use(morgan('combined', { stream: { write: (message) => logger.info(message.t
 
 app.get('/', (req, res) => {
     logger.info('Hello from acquisitions');
-
     res.status(200).send('Hello from acquisitions');
 });
+
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK', timestamp: new Date().toISOString(), uptime: process.uptime() });
+});
+app.get('/api', (req, res) => {
+    res.status(200).json({ message: 'Acquisitions API running' });
+});
+
+app.use('/api/auth', authRoutes);
 
 export default app;
